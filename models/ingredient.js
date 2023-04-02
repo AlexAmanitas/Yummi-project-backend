@@ -1,8 +1,8 @@
 const { model, Schema } = require('mongoose');
 
 const ingredientSchema = new Schema({
-  ttl: { type: String, required: true },
-  desc: { type: String, required: true },
+  ttl: String,
+  desc: String,
   t: String,
   thb: String,
 });

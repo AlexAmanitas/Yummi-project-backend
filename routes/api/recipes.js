@@ -13,15 +13,29 @@ const {
 const {
   categoryList,
   mainPage,
-  searchByIngredient,
+  getRecipeById,
   getRecipesByCategory,
+  getIngredientsList,
+  getPopularRecipes,
 } = require('../../controllers/recipes');
 
-router.get('/category-list', auth, categoryList);
+router.get('/', auth, getRecipesByCategory);
+
+router.get('/categories', auth, categoryList);
+
+router.get('/ingredients', auth, getIngredientsList);
 
 router.get('/main-page', auth, mainPage);
 
-router.get('/', auth, getRecipesByCategory);
+router.get('/popular', auth, getPopularRecipes);
+
+router.get('/favorite', auth, getFavoriteRecipes);
+
+router.get('/:id', auth, getRecipeById);
+
+router.post('/favorite', auth, addFavoriteRecipes);
+
+router.delete('/favorite', auth, removeFavoriteRecipes);
 
 // router.post('/', auth, validateBody(contactPostShema), add);
 

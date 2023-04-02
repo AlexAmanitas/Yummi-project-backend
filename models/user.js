@@ -23,6 +23,9 @@ const userSchema = new Schema(
       type: String,
       default: null,
     },
+    favorites: Array,
+    recipes: Array,
+    shopingList: Array,
   },
   { versionKey: false, timestamps: true }
 );

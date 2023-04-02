@@ -81,32 +81,6 @@ const logOut = async (req, res) => {
   res.status(204).json();
 };
 
-const getCurrentUser = async (req, res) => {
-  const { _id } = req.user;
-  const user = await User.findById(_id);
-  res.status(200).json({
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    avatar: user.avatar,
-  });
-};
-
-const updateUser = async (req, res) => {
-  const { name, avatar } = req.body;
-  const { _id } = req.user;
-  const updateObject = {};
-  if (name) updateObject.name = name;
-  if (name) updateObject.avatar = avatar;
-  const user = await User.findByIdAndUpdate(_id, updateObject);
-  res.status(200).json({
-    id: user._id,
-    name: name,
-    email: user.email,
-    avatar: user.avatar,
-  });
-};
-
 const updateAvatar = async (req, res) => {
   const { _id } = req.user;
   const { path: tempUpload, originalname } = req.file;
@@ -164,8 +138,7 @@ module.exports = {
   register: ctrlWrapper(register),
   logIn: ctrlWrapper(logIn),
   logOut: ctrlWrapper(logOut),
-  getCurrentUser: ctrlWrapper(getCurrentUser),
-  updateUser: ctrlWrapper(updateUser),
+
   updateAvatar: ctrlWrapper(updateAvatar),
   userVerification: ctrlWrapper(userVerification),
   resendEmail: ctrlWrapper(resendEmail),

@@ -2,9 +2,11 @@ const { HttpError, ctrlWrapper } = require('../../helpers');
 const Recipe = require('../../models/recipe');
 const Category = require('../../models/category');
 const Ingredient = require('../../models/ingredient');
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 
 const getRecipesByCategory = async (req, res) => {
-  const { category, title, page = 1, limit = 8 } = req.query;
+  const { ingredient, category, title, page = 1, limit = 8 } = req.query;
 
   const queryParams = {};
   if (category) {
@@ -12,6 +14,15 @@ const getRecipesByCategory = async (req, res) => {
     queryParams.category = categories[0].name;
   }
   if (title) queryParams.title = title;
+  if (ingredient) {
+    const ingredients = await Ingredient.findOne({ ttl: ingredient }).select(
+      '_id'
+    );
+    const ingredientId = ingredients._id.toHexString();
+    queryParams.ingredients = {
+      $elemMatch: { id: ObjectId(ingredientId) },
+    };
+  }
 
   const paginationParams = { skip: (page - 1) * limit, limit: +limit };
   // console.log('QUERY', queryParams, page, limit);
