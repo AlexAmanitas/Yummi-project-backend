@@ -38,7 +38,7 @@ router.get('/:id', auth, getRecipeById);
 
 router.post('/favorite', auth, addFavoriteRecipes);
 
-router.delete('/favorite', auth, removeFavoriteRecipes);
+router.delete('/favorite/:id', auth, removeFavoriteRecipes);
 
 // router.post('/', auth, validateBody(contactPostShema), add);
 

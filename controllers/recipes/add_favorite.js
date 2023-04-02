@@ -6,15 +6,18 @@ const addFavoriteRecipes = async (req, res) => {
   const { id } = req.body;
 
   const { _id } = req.user;
-  console.log(id, _id);
+  console.log(id, typeof _id);
   await User.updateOne({ _id }, { $push: { favorites: id } });
 
-  const recipe = await Recipe.findById(id);
+  const data = await Recipe.findOne({ _id: id });
 
+  if (!data) {
+    throw HttpError(404, 'Not found');
+  }
   res.status(200).json({
     status: 'success',
     code: 200,
-    recipe,
+    data,
   });
 };
 

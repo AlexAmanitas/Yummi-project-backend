@@ -1,9 +1,10 @@
 const { HttpError, ctrlWrapper } = require('../../helpers');
+const Ingredient = require('../../models/ingredient');
 const Recipe = require('../../models/recipe');
 
 const getRecipeById = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
+  // console.log(id);
 
   const data = await Recipe.findOne({ _id: id });
 
