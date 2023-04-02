@@ -22,7 +22,7 @@ const updateUser = async (req, res) => {
   const { _id } = req.user;
   const updateObject = {};
   if (name) updateObject.name = name;
-  if (name) updateObject.avatar = avatar;
+  if (avatar) updateObject.avatar = avatar;
   const user = await User.findByIdAndUpdate(_id, updateObject);
   res.status(200).json({
     id: user._id,

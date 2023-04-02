@@ -17,6 +17,9 @@ const {
   getRecipesByCategory,
   getIngredientsList,
   getPopularRecipes,
+  getFavoriteRecipes,
+  addFavoriteRecipes,
+  removeFavoriteRecipes,
 } = require('../../controllers/recipes');
 
 router.get('/', auth, getRecipesByCategory);
