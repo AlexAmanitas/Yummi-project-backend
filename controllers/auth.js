@@ -3,8 +3,6 @@ const { HttpError, ctrlWrapper } = require('../helpers');
 
 const bcrypt = require('bcrypt');
 
-// const gravatar = require('gravatar');
-
 const jwt = require('jsonwebtoken');
 
 const path = require('path');
@@ -19,31 +17,35 @@ const { sendEmail } = require('./emailServise');
 const { SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
   const user = await User.findOne({ email });
   if (user) {
     throw HttpError(409, 'Email in use');
   }
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-  // const avatarUrl = gravatar.url(email, { s: '200', r: 'pg', d: '404' });
-  const verificationToken = uuid.v4();
+  const avatarUrl = 'https://pin.it/1CT1WFj';
   await User.create({
+    name,
     email,
     password: hashPassword,
-    avatarURL: avatarUrl,
-    subscription: 'starter',
-    verificationToken: verificationToken,
+    avatar: avatarUrl,
   });
+  const registerUser = await User.findOne({ email });
+  const payload = { id: registerUser._id };
+  console.log(payload);
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
+  await User.findByIdAndUpdate(registerUser._id, { token });
 
-  sendEmail('gotvald@yahoo.com', verificationToken);
+  // sendEmail('gotvald@yahoo.com', verificationToken);
   // sendEmail(user.email, verificationToken);
 
   res.status(201).json({
+    token,
     user: {
+      id: registerUser._id,
+      name,
       email,
-      avatarURL: avatarUrl,
-      subscription: 'starter',
-      verificationToken: verificationToken,
+      avatar: avatarUrl,
     },
   });
 };
@@ -59,13 +61,16 @@ const logIn = async (req, res) => {
   //   throw HttpError(401, 'Email not verify');
   // }
   const payload = { id: user._id };
-  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '2d' });
+  console.log(payload);
+  const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
   await User.findByIdAndUpdate(user._id, { token });
   res.status(200).json({
     token,
     user: {
+      id: user._id,
+      name: user.name,
       email,
-      subscription: 'starter',
+      avatar: user.avatar,
     },
   });
 };
@@ -75,21 +80,30 @@ const logOut = async (req, res) => {
   await User.findByIdAndUpdate(_id, { token: null });
   res.status(204).json();
 };
+
 const getCurrentUser = async (req, res) => {
   const { _id } = req.user;
   const user = await User.findById(_id);
   res.status(200).json({
+    id: user._id,
+    name: user.name,
     email: user.email,
-    subscription: user.subscription,
+    avatar: user.avatar,
   });
 };
 
-const updateUserStatus = async (req, res) => {
-  const { subscription } = req.body;
+const updateUser = async (req, res) => {
+  const { name, avatar } = req.body;
   const { _id } = req.user;
-  const user = await User.findByIdAndUpdate(_id, { subscription });
+  const updateObject = {};
+  if (name) updateObject.name = name;
+  if (name) updateObject.avatar = avatar;
+  const user = await User.findByIdAndUpdate(_id, updateObject);
   res.status(200).json({
-    data: { user },
+    id: user._id,
+    name: name,
+    email: user.email,
+    avatar: user.avatar,
   });
 };
 
@@ -151,7 +165,7 @@ module.exports = {
   logIn: ctrlWrapper(logIn),
   logOut: ctrlWrapper(logOut),
   getCurrentUser: ctrlWrapper(getCurrentUser),
-  updateUserStatus: ctrlWrapper(updateUserStatus),
+  updateUser: ctrlWrapper(updateUser),
   updateAvatar: ctrlWrapper(updateAvatar),
   userVerification: ctrlWrapper(userVerification),
   resendEmail: ctrlWrapper(resendEmail),

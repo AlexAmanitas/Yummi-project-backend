@@ -1,8 +1,8 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "version": "2.0.2",
-    "title": "Swagger test",
+    "version": "0.0.1",
+    "title": "So Yummy",
     "description": "Showing off swagger-ui-express",
     "license": {
       "name": "MIT",
