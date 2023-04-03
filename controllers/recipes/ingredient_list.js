@@ -2,15 +2,15 @@ const { HttpError, ctrlWrapper } = require('../../helpers');
 const Ingredient = require('../../models/ingredient');
 
 const getIngredientsList = async (req, res) => {
-  const result = await Ingredient.find();
-  if (!result) {
+  const data = await Ingredient.find();
+  if (!data) {
     throw HttpError(404, 'Not found');
   }
 
   res.status(200).json({
     status: 'success',
     code: 200,
-    data: result,
+    data,
   });
 };
 
