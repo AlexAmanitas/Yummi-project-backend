@@ -1,6 +1,5 @@
 const User = require('../models/user');
 const { HttpError, ctrlWrapper } = require('../helpers');
-const date = require('date-and-time');
 
 const getCurrentUser = async (req, res) => {
   const { _id } = req.user;
@@ -10,10 +9,9 @@ const getCurrentUser = async (req, res) => {
   }
 
   res.status(200).json({
-    id: user._id,
-    name: user.name,
-    email: user.email,
-    avatar: user.avatar,
+    status: 'success',
+    code: 200,
+    data: { id: user._id, name: name, email: user.email, avatar: user.avatar },
   });
 };
 
@@ -25,10 +23,9 @@ const updateUser = async (req, res) => {
   if (avatar) updateObject.avatar = avatar;
   const user = await User.findByIdAndUpdate(_id, updateObject);
   res.status(200).json({
-    id: user._id,
-    name: name,
-    email: user.email,
-    avatar: user.avatar,
+    status: 'success',
+    code: 200,
+    data: { id: user._id, name: name, email: user.email, avatar: user.avatar },
   });
 };
 
@@ -40,10 +37,14 @@ const getUserStatistics = async (req, res) => {
   const timeElapsed = convertMS(currentTime.getTime() - createdAt.getTime());
 
   res.status(200).json({
-    time: timeElapsed,
-    favorites: user.favorites.length,
-    recipes: user.recipes.length,
-    shopigList: user.shopingList,
+    status: 'success',
+    code: 200,
+    data: {
+      time: timeElapsed,
+      favorites: user.favorites.length,
+      recipes: user.recipes.length,
+      shopigList: user.shopingList,
+    },
   });
 };
 
