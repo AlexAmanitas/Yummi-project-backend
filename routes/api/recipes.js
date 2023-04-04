@@ -34,7 +34,7 @@ router.get('/popular', auth, getPopularRecipes);
 
 router.get('/favorite', auth, getFavoriteRecipes);
 
-router.get('/:id', auth, getRecipeById);
+router.get('/id/:id', auth, getRecipeById);
 
 router.post('/favorite', auth, addFavoriteRecipes);
 

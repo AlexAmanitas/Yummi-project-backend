@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const { HttpError, ctrlWrapper } = require('../helpers');
+const cloudinary = require('cloudinary').v2;
 
 const getCurrentUser = async (req, res) => {
   const { _id } = req.user;
