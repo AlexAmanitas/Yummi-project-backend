@@ -12,7 +12,7 @@ const userLoginSchema = Joi.object({
 
 const userUpdateSchema = Joi.object({
   name: Joi.string(),
-  avatar: Joi.string(),
+  avatar: Joi.binary(),
 });
 
 const userVerifySchema = Joi.object({

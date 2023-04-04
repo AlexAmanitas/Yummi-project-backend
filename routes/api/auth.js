@@ -15,8 +15,6 @@ const {
   register,
   logIn,
   logOut,
-  getCurrentUser,
-  updateUser,
   updateAvatar,
   userVerification,
   resendEmail,

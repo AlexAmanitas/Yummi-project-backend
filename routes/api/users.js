@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const { auth, validateBody, upload } = require('../../middlewares');
+const { auth, validateBody, uploadCloud } = require('../../middlewares');
 
 const { userUpdateSchema } = require('../../schemas/users');
 
@@ -15,7 +15,13 @@ const {
 
 router.get('/', auth, getCurrentUser);
 
-router.patch('/', auth, validateBody(userUpdateSchema), updateUser);
+router.patch(
+  '/',
+  auth,
+  validateBody(userUpdateSchema),
+  uploadCloud.single('avatar'),
+  updateUser
+);
 
 router.get('/statistics', auth, getUserStatistics);
 
