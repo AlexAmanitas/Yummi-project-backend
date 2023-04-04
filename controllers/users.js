@@ -7,7 +7,6 @@ const getCurrentUser = async (req, res) => {
   if (!user) {
     throw HttpError(404, 'User not found');
   }
-
   res.status(200).json({
     status: 'success',
     code: 200,
@@ -21,16 +20,24 @@ const getCurrentUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { name, avatar } = req.body;
+  const { name } = req.body;
+  const { path: avatar } = req.file || {};
+  console.log(avatar);
   const { _id } = req.user;
   const updateObject = {};
   if (name) updateObject.name = name;
   if (avatar) updateObject.avatar = avatar;
   const user = await User.findByIdAndUpdate(_id, updateObject);
+  console.log(user.avatar);
   res.status(200).json({
     status: 'success',
     code: 200,
-    data: { id: user._id, name: name, email: user.email, avatar: user.avatar },
+    data: {
+      id: user._id,
+      name: name ? name : user.name,
+      email: user.email,
+      avatar: avatar ? avatar : user.avatar,
+    },
   });
 };
 

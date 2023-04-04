@@ -23,7 +23,9 @@ const register = async (req, res) => {
     throw HttpError(409, 'Email in use');
   }
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-  const avatarUrl = 'https://pin.it/1CT1WFj';
+  const avatarUrl =
+    'https://res.cloudinary.com/dsseiacfv/image/upload/v1680621422/avatars/rgvildvqnsh1qqyiibhx.jpg';
+
   await User.create({
     name,
     email,
