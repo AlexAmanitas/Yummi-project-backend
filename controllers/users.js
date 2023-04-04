@@ -1,6 +1,5 @@
 const User = require('../models/user');
 const { HttpError, ctrlWrapper } = require('../helpers');
-const cloudinary = require('cloudinary').v2;
 
 const getCurrentUser = async (req, res) => {
   const { _id } = req.user;
@@ -8,7 +7,6 @@ const getCurrentUser = async (req, res) => {
   if (!user) {
     throw HttpError(404, 'User not found');
   }
-
   res.status(200).json({
     status: 'success',
     code: 200,
