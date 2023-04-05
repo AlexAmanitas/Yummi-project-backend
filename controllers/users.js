@@ -1,5 +1,7 @@
 const User = require('../models/user');
 const { HttpError, ctrlWrapper } = require('../helpers');
+const { sendEmail } = require('./emailServise');
+const uuid = require('uuid');
 
 const getCurrentUser = async (req, res) => {
   const { _id } = req.user;
@@ -60,7 +62,17 @@ const getUserStatistics = async (req, res) => {
   });
 };
 
-const subscribeUser = async (req, res) => {};
+const subscribeUser = async (req, res) => {
+  const { email } = req.body;
+  const verificationToken = uuid.v4();
+
+  sendEmail(email, verificationToken);
+
+  res.status(200).json({
+    status: 'OK',
+    message: 'Email sent',
+  });
+};
 
 module.exports = {
   getCurrentUser: ctrlWrapper(getCurrentUser),

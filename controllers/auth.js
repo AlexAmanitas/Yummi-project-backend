@@ -8,8 +8,6 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const fs = require('fs/promises');
 
-const uuid = require('uuid');
-
 const { jimp } = require('../middlewares');
 
 const { sendEmail } = require('./emailServise');
