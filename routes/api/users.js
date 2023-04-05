@@ -25,6 +25,6 @@ router.patch(
 
 router.get('/statistics', auth, getUserStatistics);
 
-router.get('/subscribe', auth, subscribeUser);
+router.post('/subscribe', auth, subscribeUser);
 
 module.exports = router;

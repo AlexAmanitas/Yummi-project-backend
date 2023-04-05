@@ -3,6 +3,7 @@ const { Schema, model } = require('mongoose');
 
 const recipeSchema = new Schema(
   {
+    owner: { type: Schema.Types.ObjectId },
     title: {
       type: String,
       required: [true, 'Title is required'],
