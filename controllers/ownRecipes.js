@@ -103,7 +103,11 @@ const removeOwnRecipes = async (req, res) => {
   const { id } = req.params;
   const { _id } = req.user;
   console.log(id, _id);
-  const recipe = Recipe.findOne({ owner: _id, _id: id }).lean();
+  const recipe = await Recipe.findOneAndDelete({ _id: id, owner: _id });
+
+  if (!recipe) {
+    throw HttpError(404, 'Recipe not found');
+  }
 
   res.status(200).json({
     status: 'success',
