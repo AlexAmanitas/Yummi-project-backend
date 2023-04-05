@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const recipe = Joi.object({
+const RecipeSchema = Joi.object({
   title: Joi.string()
     .required()
     .messages({ 'any.required': 'missing field title' }),
@@ -30,7 +30,4 @@ const recipe = Joi.object({
   ),
 });
 
-const RecipeSchema = {
-  recipe,
-};
 module.exports = RecipeSchema;

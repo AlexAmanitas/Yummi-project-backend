@@ -4,6 +4,8 @@ const router = express.Router();
 
 const { auth, validateBody } = require('../../middlewares');
 
+const RecipeSchema = require('../../schemas/recipes');
+
 const {
   getOwnRecipes,
   addOwnRecipes,
@@ -11,7 +13,7 @@ const {
 } = require('../../controllers/ownRecipes');
 
 router.get('/', auth, getOwnRecipes);
-router.post('/', auth, addOwnRecipes);
-router.delete('/', auth, removeOwnRecipes);
+router.post('/', auth, validateBody(RecipeSchema), addOwnRecipes);
+router.delete('/:id', auth, removeOwnRecipes);
 
 module.exports = router;
