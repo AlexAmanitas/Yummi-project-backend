@@ -9,11 +9,12 @@ const getRecipesByCategory = async (req, res) => {
   const { ingredient, category, title, page = 1, limit = 8 } = req.query;
 
   const queryParams = {};
+
   if (category) {
     const categories = await Category.find({ _id: category });
     queryParams.category = categories[0].name;
   }
-  if (title) queryParams.title = title;
+  if (title) queryParams.title = { $regex: new RegExp(`${title}`, 'i') };
   if (ingredient) {
     const ingredients = await Ingredient.findOne({ ttl: ingredient }).select(
       '_id'
@@ -25,7 +26,7 @@ const getRecipesByCategory = async (req, res) => {
   }
 
   const paginationParams = { skip: (page - 1) * limit, limit: +limit };
-  // console.log('QUERY', queryParams, page, limit);
+  console.log('QUERY', queryParams, page, limit);
 
   const data = await Recipe.find(queryParams, '', paginationParams);
   if (!data) {

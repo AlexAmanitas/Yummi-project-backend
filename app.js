@@ -7,6 +7,7 @@ const recipesRouter = require('./routes/api/recipes');
 const authRouter = require('./routes/api/auth');
 const userRouter = require('./routes/api/users');
 const ownRecipesRouter = require('./routes/api/ownRecipes');
+const shopingListsRouter = require('./routes/api/shopingList');
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use('/auth', authRouter);
 app.use('/recipes', recipesRouter);
 app.use('/user', userRouter);
 app.use('/own-recipes', ownRecipesRouter);
+app.use('/shopping-list', shopingListsRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found app' });
