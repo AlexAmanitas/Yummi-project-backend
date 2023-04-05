@@ -18,8 +18,8 @@ router.get('/', auth, getCurrentUser);
 router.patch(
   '/',
   auth,
-  validateBody(userUpdateSchema),
   uploadAvatarCloud.single('avatar'),
+  validateBody(userUpdateSchema),
   updateUser
 );
 

@@ -13,11 +13,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'avatars',
-    transformation: [
-      { width: 104, height: 104, crop: 'fill', gravity: 'face' },
-      { radius: 'max' },
-    ],
+    folder: 'recipeImages',
+    transformation: [{ width: 357, height: 344, crop: 'fill' }, { radius: 8 }],
   },
 
   allowedFormats: ['jpg', 'png'],
@@ -26,6 +23,6 @@ const storage = new CloudinaryStorage({
   },
 });
 
-const uploadAvatarCloud = multer({ storage });
+const uploadRecipeImage = multer({ storage });
 
-module.exports = uploadAvatarCloud;
+module.exports = uploadRecipeImage;

@@ -69,9 +69,15 @@ const getOwnRecipes = async (req, res) => {
 
 const addOwnRecipes = async (req, res) => {
   const { _id } = req.user;
+  let recipeImage =
+    'https://res.cloudinary.com/dkkt8rmcn/image/upload/v1680464746/ndlcqobhy7tsrh5fgjoi.jpg';
+
+  if (req.file) {
+    recipeImage = req.file.path;
+  }
   const {
     title,
-    thumb,
+    // thumb,
     description,
     category,
     time,
@@ -82,7 +88,7 @@ const addOwnRecipes = async (req, res) => {
   const own = await Recipe.create({
     owner: _id,
     title,
-    thumb,
+    thumb: recipeImage,
     description,
     category,
     time,
@@ -103,7 +109,11 @@ const removeOwnRecipes = async (req, res) => {
   const { id } = req.params;
   const { _id } = req.user;
   console.log(id, _id);
-  const recipe = Recipe.findOne({ owner: _id, _id: id }).lean();
+  const recipe = await Recipe.findOneAndDelete({ _id: id, owner: _id });
+
+  if (!recipe) {
+    throw HttpError(404, 'Recipe not found');
+  }
 
   res.status(200).json({
     status: 'success',

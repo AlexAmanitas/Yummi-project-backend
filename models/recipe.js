@@ -42,6 +42,7 @@ const recipeSchema = new Schema(
     ingredients: {
       type: [{ id: Schema.Types.ObjectId, measure: String }],
       required: [true, 'Ingredients is required'],
+      _id: false,
     },
     author: {
       type: Schema.Types.ObjectId,
