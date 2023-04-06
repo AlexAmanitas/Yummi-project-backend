@@ -28,11 +28,6 @@ const swaggerOptions = {
     },
     host: 'yummy-project-backend.onrender.com',
     schemes: ['https'],
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
     components: {
       securitySchemes: {
         bearerAuth: {
