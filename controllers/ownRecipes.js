@@ -70,30 +70,16 @@ const getOwnRecipes = async (req, res) => {
 const addOwnRecipes = async (req, res) => {
   const { _id } = req.user;
   let recipeImage =
-    'https://res.cloudinary.com/dkkt8rmcn/image/upload/v1680464746/ndlcqobhy7tsrh5fgjoi.jpg';
+    'https://res.cloudinary.com/dsseiacfv/image/upload/v1680727502/recipeImages/nzcgcfrandk4fmasmtm2.jpg';
 
   if (req.file) {
     recipeImage = req.file.path;
   }
-  const {
-    title,
-    // thumb,
-    description,
-    category,
-    time,
-    instructions,
-    ingredients,
-  } = req.body;
 
   const own = await Recipe.create({
     owner: _id,
-    title,
+    ...req.body,
     thumb: recipeImage,
-    description,
-    category,
-    time,
-    instructions,
-    ingredients,
   });
   if (!own) {
     throw HttpError(500, 'Recipe not added');
