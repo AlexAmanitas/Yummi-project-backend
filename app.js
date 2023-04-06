@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+// const swaggerDocument = require('./swagger.json');
 
 const recipesRouter = require('./routes/api/recipes');
 const authRouter = require('./routes/api/auth');
@@ -12,6 +13,8 @@ const ownRecipesRouter = require('./routes/api/ownRecipes');
 const shopingListsRouter = require('./routes/api/shopingList');
 
 const app = express();
+
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const swaggerOptions = {
   swaggerDefinition: {
@@ -23,6 +26,15 @@ const swaggerOptions = {
         name: 'Withard At Work',
       },
       servers: ['https://yummy-project-backend.onrender.com'],
+    },
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
     },
   },
   securityDefinitions: {
@@ -42,8 +54,8 @@ const swaggerOptions = {
     './routes/api/users.js',
   ],
 };
-
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 
@@ -56,7 +68,6 @@ app.use('/recipes', recipesRouter);
 app.use('/user', userRouter);
 app.use('/own-recipes', ownRecipesRouter);
 app.use('/shopping-list', shopingListsRouter);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found app' });

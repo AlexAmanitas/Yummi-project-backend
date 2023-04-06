@@ -2,22 +2,25 @@ const express = require('express');
 
 const router = express.Router();
 
-const { auth, validateBody, upload } = require('../../middlewares');
+const { auth, validateBody } = require('../../middlewares');
 
-const {
-  userRegisterSchema,
-  userLoginSchema,
-  userStatusSchema,
-  userVerifySchema,
-} = require('../../schemas/users');
+const { userRegisterSchema, userLoginSchema } = require('../../schemas/users');
 
 const { register, logIn, logOut } = require('../../controllers/auth');
+
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: User authentication API
+ */
 
 /**
  * @openapi
  * /auth/register:
  *   post:
- *     description: register new User
+ *     summary: Register a new user
+ *     description: Register a new user with name, email, and password
  *     tags: [Auth]
  *     requestBody:
  *       content:
@@ -77,7 +80,8 @@ router.post('/register', validateBody(userRegisterSchema), register);
  * @openapi
  * /auth/signin:
  *   post:
- *     description: signin User
+ *     summary: Sign in with email and password
+ *     description: Sign in an existing user with their email and password
  *     tags: [Auth]
  *     requestBody:
  *       content:
@@ -128,7 +132,8 @@ router.post('/signin', validateBody(userLoginSchema), logIn);
  * @openapi
  * /auth/logout:
  *   get:
- *     description: logout
+ *     summary: Logout user.
+ *     description: Use this endpoint to log a user out of the application.
  *     tags: [Auth]
  *     securitySchemes:
  *       bearerAuth:
