@@ -70,7 +70,7 @@ const getOwnRecipes = async (req, res) => {
 const addOwnRecipes = async (req, res) => {
   const { _id } = req.user;
   let recipeImage =
-    'https://res.cloudinary.com/dsseiacfv/image/upload/v1680727502/recipeImages/nzcgcfrandk4fmasmtm2.jpg';
+    'https://res.cloudinary.com/dsseiacfv/image/upload/v1680762454/recipeImages/wkv92kkm5wgsmrst8ype.png';
 
   if (req.file) {
     recipeImage = req.file.path;
