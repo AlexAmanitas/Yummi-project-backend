@@ -2,6 +2,8 @@ const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 const recipesRouter = require('./routes/api/recipes');
 const authRouter = require('./routes/api/auth');
@@ -11,12 +13,39 @@ const shopingListsRouter = require('./routes/api/shopingList');
 
 const app = express();
 
+const swaggerOptions = {
+  swaggerDefinition: {
+    info: {
+      title: 'So Yummy API',
+      description: 'SoYummy API Information',
+      version: '0.0.1.0',
+      contact: {
+        name: 'Withard At Work',
+      },
+      servers: ['https://yummy-project-backend.onrender.com'],
+    },
+  },
+  securityDefinitions: {
+    bearerAuth: {
+      type: 'apiKey',
+      name: 'Authorization',
+      scheme: 'bearer',
+    },
+  },
+  security: [{ bearerAuth: [] }],
+  apis: [
+    'app.js',
+    './routes/api/auth.js',
+    './routes/api/ownRecipes.js',
+    './routes/api/recipes.js',
+    './routes/api/shopingList.js',
+    './routes/api/users.js',
+  ],
+};
+
+const swaggerDocs = swaggerJsDoc(swaggerOptions);
+
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
-
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(logger(formatsLogger));
 app.use(cors());
@@ -27,6 +56,7 @@ app.use('/recipes', recipesRouter);
 app.use('/user', userRouter);
 app.use('/own-recipes', ownRecipesRouter);
 app.use('/shopping-list', shopingListsRouter);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use((req, res) => {
   res.status(404).json({ message: 'Not found app' });
