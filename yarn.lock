@@ -4715,6 +4715,11 @@ onetime@^5.1.2:
   dependencies:
     mimic-fn "^2.1.0"
 
+openapi-types@^12.1.0:
+  version "12.1.0"
+  resolved "https://registry.yarnpkg.com/openapi-types/-/openapi-types-12.1.0.tgz#bd01acc937b73c9f6db2ac2031bf0231e21ebff0"
+  integrity sha512-XpeCy01X6L5EpP+6Hc3jWN7rMZJ+/k1lwki/kTmWzbVhdPie3jd5O2ZtedEx8Yp58icJ0osVldLMrTB/zslQXA==
+
 optionator@^0.8.1:
   version "0.8.3"
   resolved "https://registry.npmjs.org/optionator/-/optionator-0.8.3.tgz"
@@ -5551,7 +5556,7 @@ swagger-parser@^10.0.3:
 
 swagger-ui-dist@>=4.11.0:
   version "4.18.2"
-  resolved "https://registry.npmjs.org/swagger-ui-dist/-/swagger-ui-dist-4.18.2.tgz"
+  resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-4.18.2.tgz#323308f1c1d87a7c22ce3e273c31835eb680a71b"
   integrity sha512-oVBoBl9Dg+VJw8uRWDxlyUyHoNEDC0c1ysT6+Boy6CTgr2rUcLcfPon4RvxgS2/taNW6O0+US+Z/dlAsWFjOAQ==
 
 swagger-ui-express@^4.6.2:

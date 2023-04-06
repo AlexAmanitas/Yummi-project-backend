@@ -25,8 +25,14 @@ const swaggerOptions = {
       contact: {
         name: 'Withard At Work',
       },
-      servers: ['https://yummy-project-backend.onrender.com'],
     },
+    host: 'yummy-project-backend.onrender.com',
+    schemes: ['https'],
+    security: [
+      {
+        bearerAuth: [],
+      },
+    ],
     components: {
       securitySchemes: {
         bearerAuth: {
@@ -44,7 +50,6 @@ const swaggerOptions = {
       scheme: 'bearer',
     },
   },
-  security: [{ bearerAuth: [] }],
   apis: [
     'app.js',
     './routes/api/auth.js',
