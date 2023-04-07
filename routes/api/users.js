@@ -54,7 +54,7 @@ const {
  *     description: Returns user details including id, name, email, and avatar.
  *     tags: [User]
  *     securitySchemes:
- *       bearerAuth:
+ *       BearerAuth:
  *         type: apiKey
  *         name: Authorization
  *         in: header
@@ -91,7 +91,7 @@ router.get('/', auth, getCurrentUser);
  * /user:
  *   patch:
  *     securitySchemes:
- *       bearerAuth:
+ *       BearerAuth:
  *         type: apiKey
  *         name: Authorization
  *         in: header
@@ -154,7 +154,7 @@ router.patch(
  *     summary: Get user statistics
  *     description: Retrieve the number of days, recipes, favorites, and shopping lists for the authenticated user.
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  *     tags:
  *       - User
  *     produces:
@@ -217,7 +217,7 @@ router.get('/statistics', auth, getUserStatistics);
  *       500:
  *         description: Internal server error.
  *     security:
- *       - bearerAuth: []
+ *       - BearerAuth: []
  */
 
 router.post('/subscribe', auth, subscribeUser);

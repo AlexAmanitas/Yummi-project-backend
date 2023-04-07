@@ -1,119 +1,592 @@
 {
-  "openapi": "3.0.1",
+  "openapi": "3.0.0",
   "info": {
-    "version": "0.0.1",
-    "title": "So Yummy",
-    "description": "Showing off swagger-ui-express",
-    "license": {
-      "name": "MIT",
-      "url": "https://opensource.org/licenses/MIT"
-    }
+    "title": "Recipe App API",
+    "version": "1.0.0"
   },
-  "consumes": ["application/json", "mulyipart/form-data"],
-  "produces": ["application/json"],
-  "servers": [{ "url": "http://localhost:3000" }],
-  "tags": [
+  "servers": [
     {
-      "name": "Auth",
-      "description": "Authorization endpoints"
+      "url": "http://localhost:3000"
+    },
+    {
+      "url": "https://yummy-project-backend.onrender.com"
     }
   ],
-
   "paths": {
     "/auth/register": {
       "post": {
-        "tags": ["Auth"],
+        "tags": ["Authorization"],
         "summary": "User registration",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "Registration's object",
-          "required": true,
+          "description": "User registration information",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RegistrationRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Successful operation",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RegistrationResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request (invalid request body)",
-            "content": {}
-          },
-          "409": {
-            "description": "Provided email already exists",
-            "content": {}
-          }
-        }
-      }
-    },
-    "/auth/signin": {
-      "post": {
-        "tags": ["Auth"],
-        "summary": "User login",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "User's login credentials",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LoginRequest"
+                "$ref": "#/components/schemas/UserRegistration"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Successful operation",
+            "description": "User registration successful",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
+                  "$ref": "#/components/schemas/UserAuth"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/signin": {
+      "post": {
+        "tags": ["Authorization"],
+        "summary": "User login",
+        "requestBody": {
+          "description": "User login information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserLogin"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAuth"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": ["Authorization"],
+        "summary": "User logout",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User logout successful",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user details",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDetails"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["User"],
+        "summary": "Update user details",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "User details to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User details updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/statistics": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user statistics",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User statistics found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserStatistics"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/subscribe": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Subscribe to email notifications",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "User email address",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserEmail"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User subscribed to email notifications",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserEmail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Get list of recipes",
+        "description": "Get list of recipes filtered by category, title, ingredient, page, and limit",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Filter by category",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "title",
+            "in": "query",
+            "description": "Filter by recipe title",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ingredient",
+            "in": "query",
+            "description": "Filter by ingredient",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of recipes per page",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of recipes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeSchema"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/recipes/id/{id}": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Get recipe details",
+        "description": "Get recipe details by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Recipe ID",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "640cd5ac2d9fecf12e889853"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeSchema"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/recipes/main-page": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Get list of recipes for main page",
+        "description": "Get list of recipes for main page",
+        "responses": {
+          "200": {
+            "description": "List of recipes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeSchema"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/recipes/popular": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Get list of popular recipes",
+        "description": "Get list of popular recipes",
+        "responses": {
+          "200": {
+            "description": "List of recipes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeSchema"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ]
+      }
+    },
+    "/recipes/favorite": {
+      "get": {
+        "tags": ["Recipes"],
+        "summary": "Get list of favorite recipes",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Recipes per page",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of favorite recipes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RecipeSchema"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Recipes"],
+        "summary": "Add recipe to favorites",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "ID of recipe to add to favorites",
+                    "example": "640cd5ac2d9fecf12e88985e"
+                  }
+                },
+                "required": ["id"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Recipe added to favorites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes/favorite/{id}": {
+      "delete": {
+        "tags": ["Recipes"],
+        "summary": "Remove recipe from favorites",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of recipe to remove from favorites",
+            "schema": {
+              "type": "string",
+              "example": "640cd5ac2d9fecf12e88985e"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe removed from favorites",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecipeSchema"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/own-recipes": {
+      "get": {
+        "tags": ["Own Recipes"],
+        "summary": "Get own recipes",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Items per page",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return a list of own recipes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Recipe"
+                  }
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized (wrong email or password)",
-            "content": {}
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Own Recipes"],
+        "summary": "Add own recipe",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Recipe object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Recipe added successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
     },
-    "paths": {
-      "/user": {
-        "get": {
-          "tags": ["User"],
-          "summary": "Get user details",
-          "parameters": [],
-          "security": [{ "Bearer": [] }],
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "content": {
-                "application/json": {
-                  "schema": { "$ref": "#/components/schemas/UserDetails" }
-                }
-              }
-            },
-            "401": {
-              "description": "Unauthorized (invalid or missing token)",
-              "content": {}
+    "/own-recipes/{id}": {
+      "delete": {
+        "tags": ["Own Recipes"],
+        "summary": "Delete own recipe",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Recipe ID",
+            "schema": {
+              "type": "string"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "schema": { "$ref": "#/components/schemas/Recipe" },
+            "description": "Recipe deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Recipe not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -121,114 +594,207 @@
   },
   "components": {
     "schemas": {
-      "RegistrationRequest": {
+      "UserRegistration": {
         "type": "object",
-        "required": ["name", "email", "password"],
         "properties": {
           "name": {
             "type": "string",
-            "description": "User's name",
             "example": "John Doe"
           },
           "email": {
             "type": "string",
-            "description": "User's email",
-            "format": "email",
-            "example": "John@mail.com"
+            "example": "johndoe@mail.com"
           },
           "password": {
             "type": "string",
-            "description": "User's password",
-            "example": "qwerty123"
+            "example": "password123"
+          }
+        },
+        "required": ["name", "email", "password"]
+      },
+      "UserLogin": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "johndoe@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123"
+          }
+        },
+        "required": ["email", "password"]
+      },
+      "UserAuth": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDetails"
           }
         }
       },
-      "RegistrationResponse": {
+      "UserDetails": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          }
+        }
+      },
+      "UserUpdate": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          }
+        }
+      },
+      "UserStatistics": {
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "integer"
+          },
+          "recipes": {
+            "type": "integer"
+          },
+          "favorites": {
+            "type": "integer"
+          },
+          "shoppingLists": {
+            "type": "integer"
+          }
+        }
+      },
+      "UserEmail": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "RecipeSchema": {
         "type": "array",
         "items": {
           "type": "object",
           "properties": {
-            "email": {
-              "type": "string",
-              "description": "User's email",
-              "format": "email"
+            "id": {
+              "type": "string"
             },
-            "userId": {
-              "type": "number",
-              "description": "User's id",
-              "example": "32143232436545474"
-            }
-          }
-        },
-        "example": [
-          { "email": "1@gmail.com", "userId": "1" },
-          { "email": "2@gmail.com", "userId": "2" }
-        ]
-      },
-      "LoginRequest": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "qwerty123"
-          }
-        }
-      },
-      "LoginResponse": {
-        "type": "object",
-        "properties": {
-          "token": {
-            "type": "string",
-            "description": "Access token to be used in future requests",
-            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"
-          },
-          "user": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "description": "User's id",
-                "example": "32143232436545474"
-              },
-              "name": {
-                "type": "string",
-                "description": "User's name",
-                "example": "John Doe"
-              },
-              "email": {
-                "type": "string",
-                "description": "User's email",
-                "format": "email",
-                "example": "john@mail.com"
-              },
-              "avatar": {
-                "type": "string",
-                "description": "User's avatar URL",
-                "example": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
+            "title": {
+              "type": "string"
+            },
+            "category": {
+              "type": "string"
+            },
+            "instructions": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "thumb": {
+              "type": "string"
+            },
+            "time": {
+              "type": "string"
+            },
+            "ingredients": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "measure": {
+                    "type": "string"
+                  }
+                }
               }
             }
           }
-        },
-        "example": {
-          "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9",
-          "user": {
-            "id": "1",
-            "name": "John Doe",
-            "email": "john@mail.com",
-            "avatar": "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50"
+        }
+      },
+      "Recipe": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "ID of recipe",
+            "example": "abc123"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of recipe",
+            "example": "Spaghetti Carbonara"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of recipe",
+            "example": "Pasta"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Instructions for preparing the recipe",
+            "example": "Boil pasta. Fry bacon. Mix with eggs and cheese."
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of recipe",
+            "example": "A classic Italian pasta dish with bacon and cheese."
+          },
+          "thumb": {
+            "type": "string",
+            "description": "URL of recipe thumbnail",
+            "example": "https://www.example.com/images/spaghetti-carbonara.jpg"
+          },
+          "time": {
+            "type": "string",
+            "description": "Cooking time for the recipe",
+            "example": "30 minutes"
+          },
+          "ingredients": {
+            "type": "array",
+            "description": "List of recipe ingredients",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "ID of ingredient",
+                  "example": "def456"
+                },
+                "measure": {
+                  "type": "string",
+                  "description": "Measurement for ingredient",
+                  "example": "1 cup"
+                }
+              }
+            }
           }
         }
       }
     },
     "securitySchemes": {
-      "Bearer": {
+      "BearerAuth": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"

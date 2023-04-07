@@ -2,9 +2,9 @@ const express = require('express');
 const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
-const swaggerJsDoc = require('swagger-jsdoc');
+// const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
-// const swaggerDocument = require('./swagger.json');
+const swaggerDocument = require('./swagger.json');
 
 const recipesRouter = require('./routes/api/recipes');
 const authRouter = require('./routes/api/auth');
@@ -14,48 +14,48 @@ const shopingListsRouter = require('./routes/api/shopingList');
 
 const app = express();
 
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-const swaggerOptions = {
-  swaggerDefinition: {
-    info: {
-      title: 'So Yummy API',
-      description: 'SoYummy API Information',
-      version: '0.0.1.0',
-      contact: {
-        name: 'Withard At Work',
-      },
-    },
-    host: 'yummy-project-backend.onrender.com',
-    schemes: ['https'],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: 'http',
-          scheme: 'bearer',
-          bearerFormat: 'JWT',
-        },
-      },
-    },
-  },
-  securityDefinitions: {
-    bearerAuth: {
-      type: 'apiKey',
-      name: 'Authorization',
-      scheme: 'bearer',
-    },
-  },
-  apis: [
-    'app.js',
-    './routes/api/auth.js',
-    './routes/api/ownRecipes.js',
-    './routes/api/recipes.js',
-    './routes/api/shopingList.js',
-    './routes/api/users.js',
-  ],
-};
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+// const swaggerOptions = {
+//   swaggerDefinition: {
+//     info: {
+//       title: 'So Yummy API',
+//       description: 'SoYummy API Information',
+//       version: '0.0.1.0',
+//       contact: {
+//         name: 'Withard At Work',
+//       },
+//     },
+//     host: 'yummy-project-backend.onrender.com',
+//     schemes: ['https'],
+//     components: {
+//       securitySchemes: {
+//         bearerAuth: {
+//           type: 'http',
+//           scheme: 'bearer',
+//           bearerFormat: 'JWT',
+//         },
+//       },
+//     },
+//   },
+//   securityDefinitions: {
+//     bearerAuth: {
+//       type: 'apiKey',
+//       name: 'Authorization',
+//       scheme: 'bearer',
+//     },
+//   },
+//   apis: [
+//     'app.js',
+//     './routes/api/auth.js',
+//     './routes/api/ownRecipes.js',
+//     './routes/api/recipes.js',
+//     './routes/api/shopingList.js',
+//     './routes/api/users.js',
+//   ],
+// };
+// const swaggerDocs = swaggerJsDoc(swaggerOptions);
+// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short';
 

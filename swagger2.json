@@ -1,0 +1,142 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Recipe API",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "Recipe": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Recipe ID"
+          },
+          "title": {
+            "type": "string",
+            "description": "Recipe title"
+          },
+          "category": {
+            "type": "string",
+            "description": "Recipe category"
+          },
+          "instructions": {
+            "type": "string",
+            "description": "Recipe instructions"
+          },
+          "description": {
+            "type": "string",
+            "description": "Recipe description"
+          },
+          "thumb": {
+            "type": "string",
+            "description": "Recipe thumbnail"
+          },
+          "time": {
+            "type": "string",
+            "description": "Recipe cooking time"
+          },
+          "ingredients": {
+            "type": "array",
+            "description": "Recipe ingredients",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Ingredient ID"
+                },
+                "measure": {
+                  "type": "string",
+                  "description": "Ingredient measure"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/own-recipes": {
+      "post": {
+        "summary": "Add own recipe",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Recipe object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Recipe"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Recipe added successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/own-recipes/{id}": {
+      "delete": {
+        "summary": "Delete own recipe",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "Recipe ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recipe deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Recipe not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}

@@ -136,12 +136,11 @@ router.post('/signin', validateBody(userLoginSchema), logIn);
  *     description: Use this endpoint to log a user out of the application.
  *     tags: [Auth]
  *     securitySchemes:
- *       bearerAuth:
+ *       Bearer:
  *         type: apiKey
  *         name: Authorization
  *         in: header
- *     security:
- *       - bearerAuth: []
+ *     security: {Bearer: []}
  *     responses:
  *       200:
  *         description: Success
