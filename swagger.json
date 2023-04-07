@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "So Yummy App API",
-    "version": "1.0.0"
+    "version": "0.5.6.1"
   },
   "servers": [
     {
