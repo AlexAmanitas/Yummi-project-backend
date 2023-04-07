@@ -2,8 +2,6 @@ const { HttpError, ctrlWrapper } = require('../../helpers');
 const Recipe = require('../../models/recipe');
 const Category = require('../../models/category');
 const Ingredient = require('../../models/ingredient');
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
 
 const getRecipesByCategory = async (req, res) => {
   const { ingredient, category, title, page = 1, limit = 8 } = req.query;
@@ -16,20 +14,15 @@ const getRecipesByCategory = async (req, res) => {
   }
   if (title) queryParams.title = { $regex: new RegExp(`${title}`, 'i') };
   if (ingredient) {
-    const ingredients = await Ingredient.findOne({
+    const ingredientId = await Ingredient.findOne({
       ttl: { $regex: new RegExp(`${ingredient}`, 'i') },
     }).select('_id');
-    if (!ingredients) {
-      throw HttpError(404, 'Ingredient not found');
-    }
-    const ingredientId = ingredients._id.toHexString();
     queryParams.ingredients = {
-      $elemMatch: { id: ObjectId(ingredientId) },
+      $elemMatch: { id: ingredientId },
     };
   }
 
   const paginationParams = { skip: (page - 1) * limit, limit: +limit };
-  console.log('QUERY', queryParams, page, limit);
 
   const data = await Recipe.find(queryParams, '', paginationParams);
   if (!data) {

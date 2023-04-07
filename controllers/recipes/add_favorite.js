@@ -6,8 +6,7 @@ const addFavoriteRecipes = async (req, res) => {
   const { id } = req.body;
 
   const { _id } = req.user;
-  console.log(id, typeof _id);
-  await User.updateOne({ _id }, { $push: { favorites: id } });
+  await User.updateOne({ _id }, { $addToSet: { favorites: id } });
 
   const data = await Recipe.findOne({ _id: id });
 

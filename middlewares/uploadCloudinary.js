@@ -15,7 +15,7 @@ const storage = new CloudinaryStorage({
   params: {
     folder: 'avatars',
     transformation: [
-      { width: 104, height: 104, crop: 'fill', gravity: 'face' },
+      { width: 103, height: 103, crop: 'fill', gravity: 'face' },
       { radius: 'max' },
     ],
   },

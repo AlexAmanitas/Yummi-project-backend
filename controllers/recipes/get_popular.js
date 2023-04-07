@@ -4,7 +4,6 @@ const Recipe = require('../../models/recipe');
 const getPopularRecipes = async (req, res) => {
   const recipes = await Recipe.find();
 
-  console.log('POPULAR', recipes[5].favorites.length);
   const result = recipes.sort((a, b) => {
     return b.favorites.length - a.favorites.length;
   });

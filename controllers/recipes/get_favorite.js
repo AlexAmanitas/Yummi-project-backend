@@ -8,7 +8,6 @@ const getFavoriteRecipes = async (req, res) => {
 
   const { _id } = req.user;
   const user = await User.findById(_id);
-  // console.log('GETFAV', user.favorites);
 
   const data = await Recipe.find(
     { _id: { $in: user.favorites } },
