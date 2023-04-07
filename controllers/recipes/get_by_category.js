@@ -16,9 +16,12 @@ const getRecipesByCategory = async (req, res) => {
   }
   if (title) queryParams.title = { $regex: new RegExp(`${title}`, 'i') };
   if (ingredient) {
-    const ingredients = await Ingredient.findOne({ ttl: ingredient }).select(
-      '_id'
-    );
+    const ingredients = await Ingredient.findOne({
+      ttl: { $regex: new RegExp(`${ingredient}`, 'i') },
+    }).select('_id');
+    if (!ingredients) {
+      throw HttpError(404, 'Ingredient not found');
+    }
     const ingredientId = ingredients._id.toHexString();
     queryParams.ingredients = {
       $elemMatch: { id: ObjectId(ingredientId) },
