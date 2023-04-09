@@ -19,6 +19,7 @@
         "summary": "User registration",
         "requestBody": {
           "description": "User registration information",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -53,6 +54,7 @@
         "summary": "User login",
         "requestBody": {
           "description": "User login information",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
@@ -650,7 +652,8 @@
                 "$ref": "#/components/schemas/Recipe"
               }
             }
-          }
+          },
+          "example": { "$ref": "#/components/schemas/Recipe" }
         },
         "responses": {
           "200": {
