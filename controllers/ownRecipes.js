@@ -1,4 +1,3 @@
-const User = require('../models/user');
 const Recipe = require('../models/recipe');
 const { HttpError, ctrlWrapper } = require('../helpers');
 const mongoose = require('mongoose');
