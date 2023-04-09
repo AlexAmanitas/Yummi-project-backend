@@ -10,7 +10,7 @@ const getRecipeById = async (req, res) => {
 
   const user = await User.findOne({ _id });
 
-  const favorite = user.favorites.includes(id);
+  const isFavorite = user.favorites.includes(id);
 
   const recipe = await Recipe.aggregate([
     {
@@ -59,7 +59,7 @@ const getRecipeById = async (req, res) => {
   res.status(200).json({
     status: 'success',
     code: 200,
-    data: { ...recipe[0], favorite },
+    data: { ...recipe[0], isFavorite },
   });
 };
 
