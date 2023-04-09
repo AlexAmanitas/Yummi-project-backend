@@ -14,7 +14,7 @@ const getShopingList = async (req, res) => {
   res.status(200).json({
     status: 'success',
     code: 200,
-    data: user.shopingList,
+    data: user,
   });
 };
 
@@ -67,11 +67,17 @@ const addShopingList = async (req, res) => {
 const removeShopingList = async (req, res) => {
   const { id } = req.params;
   const { _id } = req.user;
+  const data = await User.findOne(
+    { _id },
+    { shopingList: { $elemMatch: { id } } }
+  );
+
   await User.updateOne({ _id }, { $pull: { shopingList: { id } } });
 
   res.status(200).json({
     status: 'success',
     code: 200,
+    data: data.shopingList[0],
   });
 };
 
