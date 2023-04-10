@@ -52,8 +52,8 @@ const getRecipeById = async (req, res) => {
       $unset: ['ingr_nfo', 'ingredients.id'],
     },
   ]);
-
-  if (!recipe) {
+  console.log('RECIPE', recipe);
+  if (!recipe || recipe.length === 0) {
     throw HttpError(404, 'Not found');
   }
   res.status(200).json({
