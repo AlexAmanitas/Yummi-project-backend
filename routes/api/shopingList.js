@@ -14,6 +14,6 @@ const {
 
 router.get('/', auth, getShopingList);
 router.post('/', auth, addShopingList);
-router.delete('/:id', auth, removeShopingList);
+router.delete('/', auth, removeShopingList);
 
 module.exports = router;

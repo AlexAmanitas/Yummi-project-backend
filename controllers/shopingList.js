@@ -65,19 +65,30 @@ const addShopingList = async (req, res) => {
 };
 
 const removeShopingList = async (req, res) => {
-  const { id } = req.params;
+  const { id, recipe } = req.body;
   const { _id } = req.user;
-  const data = await User.findOne(
+  // const data = await User.findOne(
+  //   { _id },
+  //   { shopingList: { $elemMatch: { $and: [{ id }, { recipe }] } } }
+  // );
+
+  const user = await User.findOneAndUpdate(
     { _id },
-    { shopingList: { $elemMatch: { id } } }
+    { $pull: { shopingList: { $and: [{ id }, { recipe }] } } }
+  );
+  const data = user.shopingList.find(
+    item => item.id === id && item.recipe === recipe
   );
 
-  await User.updateOne({ _id }, { $pull: { shopingList: { id } } });
+  if (!data) {
+    throw HttpError(404, 'Ingredient not found');
+  }
+  console.log(data.shopingList);
 
   res.status(200).json({
     status: 'success',
     code: 200,
-    data: data.shopingList[0],
+    data,
   });
 };
 
