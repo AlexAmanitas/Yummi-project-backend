@@ -18,16 +18,18 @@ const RecipeSchema = Joi.object({
     .messages({ 'any.required': 'missing field category' }),
   thumb: Joi.string(),
   preview: Joi.string(),
-  ingredients: Joi.array().items(
-    Joi.object({
-      id: Joi.string()
-        .required()
-        .messages({ 'any.required': 'missing field ingredients id' }),
-      measure: Joi.string()
-        .required()
-        .messages({ 'any.required': 'missing field ingredients measure' }),
-    })
-  ),
+  ingredients: Joi.array()
+    .required()
+    .items(
+      Joi.object({
+        id: Joi.string()
+          .required()
+          .messages({ 'any.required': 'missing field ingredients id' }),
+        measure: Joi.string()
+          .required()
+          .messages({ 'any.required': 'missing field ingredients measure' }),
+      })
+    ),
 });
 
 module.exports = RecipeSchema;
