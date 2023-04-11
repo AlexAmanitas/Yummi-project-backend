@@ -65,35 +65,13 @@ const addShopingList = async (req, res) => {
 };
 
 const removeShopingList = async (req, res) => {
-  // const { id, recipe } = req.body;
   const { _id } = req.user;
-  // const data = await User.findOne(
-  //   { _id },
-  //   { shopingList: { $elemMatch: { $and: [{ id }, { recipe }] } } }
-  // )
   req.body.map(async ({ id, recipe }) => {
     await User.findOneAndUpdate(
       { _id },
       { $pull: { shopingList: { $and: [{ id }, { recipe }] } } }
     );
-    // return data.push(
-    //   user.shopingList.find(item => item.id === id && item.recipe === recipe)
-    // );
   });
-
-  // const user = await User.findOneAndUpdate(
-  //   { _id },
-  //   { $pull: { shopingList: { $and: [{ id }, { recipe }] } } }
-  // );
-  // const data = user.shopingList.find(
-  //   item => item.id === id && item.recipe === recipe
-  // );
-
-  // if (!data) {
-  //   throw HttpError(404, ' not found');
-  // }
-  // console.log(data.shopingList);
-
   res.status(204).json({
     status: 'success',
     code: 204,

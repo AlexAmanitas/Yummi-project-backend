@@ -315,7 +315,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecipeSchema"
+                  "$ref": "#/components/schemas/Recipe"
                 }
               }
             }
@@ -360,10 +360,11 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecipeSchema"
+                  "$ref": "#/components/schemas/Recipe"
                 }
               }
-            }
+            },
+            "isFavorite": { "type": "boolean", "example": "true" }
           },
           "401": {
             "description": "Unauthorized"
@@ -393,7 +394,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecipeSchema"
+                  "$ref": "#/components/schemas/Recipe"
                 }
               }
             }
@@ -426,7 +427,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecipeSchema"
+                  "$ref": "#/components/schemas/Recipe"
                 }
               }
             }
@@ -480,7 +481,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/RecipeSchema"
+                    "$ref": "#/components/schemas/Recipe"
                   }
                 }
               }
@@ -526,7 +527,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecipeSchema"
+                  "$ref": "#/components/schemas/Recipe"
                 }
               }
             }
@@ -567,7 +568,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/RecipeSchema"
+                  "$ref": "#/components/schemas/Recipe"
                 }
               }
             }
@@ -704,6 +705,111 @@
           }
         }
       }
+    },
+    "/shopping-list": {
+      "get": {
+        "tags": ["Shopping List"],
+        "summary": "Get shopping list",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Shopping list found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ShoppingListItem"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "post": {
+        "tags": ["Shopping List"],
+        "summary": "Add item to shopping list",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Item to add to shopping list",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ShoppingListItem"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Shopping list item added",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShoppingListItem"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Shopping List"],
+        "summary": "Delete item from shopping list",
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "description": "Items to delete from shopping list",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/ShoppingListItem"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Shopping list item deleted",
+            "content": {}
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -783,16 +889,16 @@
         "type": "object",
         "properties": {
           "days": {
-            "type": "integer"
+            "type": "string"
           },
           "recipes": {
-            "type": "integer"
+            "type": "string"
           },
           "favorites": {
-            "type": "integer"
+            "type": "string"
           },
           "shoppingLists": {
-            "type": "integer"
+            "type": "string"
           }
         }
       },
@@ -804,56 +910,13 @@
           }
         }
       },
-      "RecipeSchema": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string"
-            },
-            "title": {
-              "type": "string"
-            },
-            "category": {
-              "type": "string"
-            },
-            "instructions": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "thumb": {
-              "type": "string"
-            },
-            "time": {
-              "type": "string"
-            },
-            "ingredients": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "type": "string"
-                  },
-                  "measure": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
       "Recipe": {
         "type": "object",
         "properties": {
           "id": {
             "type": "string",
             "description": "ID of recipe",
-            "example": "abc123"
+            "example": "640cd5ac2d9fecf12e8897ef"
           },
           "title": {
             "type": "string",
@@ -894,7 +957,7 @@
                 "id": {
                   "type": "string",
                   "description": "ID of ingredient",
-                  "example": "def456"
+                  "example": "640c2dd963a319ea671e366a"
                 },
                 "measure": {
                   "type": "string",
@@ -903,6 +966,26 @@
                 }
               }
             }
+          }
+        }
+      },
+      "ShoppingListItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "recipe": {
+            "type": "string"
+          },
+          "ttl": {
+            "type": "string"
+          },
+          "thb": {
+            "type": "string"
+          },
+          "measure": {
+            "type": "string"
           }
         }
       }
