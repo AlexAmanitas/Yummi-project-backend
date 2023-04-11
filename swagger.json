@@ -791,7 +791,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/components/schemas/ShoppingListItem"
+                  "$ref": "#/components/schemas/ShoppingListDelete"
                 }
               }
             }
@@ -985,6 +985,17 @@
             "type": "string"
           },
           "measure": {
+            "type": "string"
+          }
+        }
+      },
+      "ShoppingListDelete": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "recipe": {
             "type": "string"
           }
         }
