@@ -17,11 +17,15 @@ const { handleConnection, validateToken } = require('./socket');
 
 const app = express();
 const httpServer = createServer(app);
+
+// настройка socket.io
 const io = new Server(httpServer, {
   cors: {
     origin: '*',
   },
 });
+io.use(validateToken);
+io.on('connection', handleConnection);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -45,9 +49,5 @@ app.use((err, req, res, next) => {
   const { status = 500 } = err;
   res.status(status).json({ message: err.message });
 });
-
-// настройка socket.io
-io.use(validateToken);
-io.on('connection', handleConnection);
 
 module.exports = { httpServer, io };
