@@ -2,14 +2,13 @@ const { HttpError, ctrlWrapper } = require('../../helpers');
 const Recipe = require('../../models/recipe');
 const Category = require('../../models/category');
 const Ingredient = require('../../models/ingredient');
-const io = require('../../socket');
 
 const getRecipesByCategory = async (req, res) => {
   const { ingredient, category, title, page = 1, limit = 8 } = req.query;
 
   const queryParams = {};
   console.log('SEARCH');
-  io.emit('userRegister', { name: 'user.name ' });
+
   if (category) {
     const categories = await Category.find({ _id: category });
     queryParams.category = categories[0].name;

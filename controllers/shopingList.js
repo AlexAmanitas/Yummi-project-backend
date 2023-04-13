@@ -1,8 +1,9 @@
 const User = require('../models/user');
-const Ingredient = require('../models/ingredient');
+// const Ingredient = require('../models/ingredient');
 const { HttpError, ctrlWrapper } = require('../helpers');
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
+// const mongoose = require('mongoose');
+const { sendMotivation } = require('../socket');
+// const ObjectId = mongoose.Types.ObjectId;
 
 const getShopingList = async (req, res) => {
   const { _id } = req.user;
@@ -22,6 +23,7 @@ const addShopingList = async (req, res) => {
   console.log('SHOPPING');
   const { _id } = req.user;
   await User.updateOne({ _id }, { $push: { shopingList: { ...req.body } } });
+  sendMotivation(_id, 'You`ve successfully added item to shoping list!');
   res.status(201).json({
     status: 'success',
     code: 201,
