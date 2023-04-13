@@ -6,7 +6,7 @@ const io = require('../../socket');
 const addFavoriteRecipes = async (req, res) => {
   const { id } = req.body;
   const { _id } = req.user;
-  const user = await User.findById(_id);
+  // const user = await User.findById(_id);
   await User.updateOne({ _id }, { $addToSet: { favorites: id } });
 
   const data = await Recipe.findOne({ _id: id });
