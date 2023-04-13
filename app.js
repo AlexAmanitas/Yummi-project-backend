@@ -10,7 +10,6 @@ const authRouter = require('./routes/api/auth');
 const userRouter = require('./routes/api/users');
 const ownRecipesRouter = require('./routes/api/ownRecipes');
 const shopingListsRouter = require('./routes/api/shopingList');
-// const io = require('./socket');
 
 const app = express();
 
@@ -36,7 +35,5 @@ app.use((err, req, res, next) => {
   const { status = 500 } = err;
   res.status(status).json({ message: err.message });
 });
-
-// io.listen(3005);
 
 module.exports = app;

@@ -22,8 +22,8 @@ const getFavoriteRecipes = async (req, res) => {
     status: 'success',
     code: 200,
     total: user.favorites.length,
-    page,
-    limit,
+    page: +page,
+    limit: +limit,
     data,
   });
 };

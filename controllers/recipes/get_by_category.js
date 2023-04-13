@@ -40,8 +40,8 @@ const getRecipesByCategory = async (req, res) => {
     status: 'success',
     code: 200,
     total: search.length,
-    page,
-    limit,
+    page: +page,
+    limit: +limit,
     data,
   });
 };

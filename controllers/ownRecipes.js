@@ -62,8 +62,8 @@ const getOwnRecipes = async (req, res) => {
     status: 'success',
     code: 200,
     total,
-    page,
-    limit,
+    page: +page,
+    limit: +limit,
     data: recipes,
   });
 };
