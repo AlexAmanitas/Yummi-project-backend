@@ -8,6 +8,7 @@ const getFavoriteRecipes = async (req, res) => {
 
   const { _id } = req.user;
   const user = await User.findById(_id);
+  console.log('fav', _id.toString());
 
   const data = await Recipe.find(
     { _id: { $in: user.favorites } },
@@ -20,6 +21,9 @@ const getFavoriteRecipes = async (req, res) => {
   res.status(200).json({
     status: 'success',
     code: 200,
+    total: user.favorites.length,
+    page,
+    limit,
     data,
   });
 };

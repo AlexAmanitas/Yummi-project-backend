@@ -19,7 +19,7 @@ const RecipeSchema = Joi.object({
   thumb: Joi.string(),
   preview: Joi.string(),
   ingredients: Joi.array()
-    // .required()
+    .required()
     .items(
       Joi.object({
         id: Joi.string()
