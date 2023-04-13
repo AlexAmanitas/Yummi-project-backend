@@ -14,12 +14,12 @@ const addFavoriteRecipes = async (req, res) => {
   if (!data) {
     throw HttpError(404, 'Not found');
   }
-  if (user.favorites.length === 0) {
-    io.emit('motivation', {
-      favorite: data.title,
-      message: 'You’ve added first item to your shopping list!',
-    });
-  }
+  // if (user.favorites.length === 0) {
+  io.emit('motivation', {
+    favorite: data.title,
+    message: 'You’ve added first item to your shopping list!',
+  });
+  // }
   res.status(200).json({
     status: 'success',
     code: 200,
