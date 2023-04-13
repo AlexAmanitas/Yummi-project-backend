@@ -24,13 +24,11 @@ const getCurrentUser = async (req, res) => {
 const updateUser = async (req, res) => {
   const { name } = req.body;
   const { path: avatar } = req.file || {};
-  console.log(avatar);
   const { _id } = req.user;
   const updateObject = {};
   if (name) updateObject.name = name;
   if (avatar) updateObject.avatar = avatar;
   const user = await User.findByIdAndUpdate(_id, updateObject);
-  console.log(user.avatar);
   res.status(200).json({
     status: 'success',
     code: 200,
@@ -86,9 +84,7 @@ function convertMS(milliseconds) {
   // const minutes = Math.floor((milliseconds / (1000 * 60)) % 60);
   // const hours = Math.floor((milliseconds / (1000 * 60 * 60)) % 24);
   const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
-
   // const formatTime = time => (time < 10 ? `0${time}` : time);
-
   // const result = `${days}d ${formatTime(hours)}h ${formatTime(
   //   minutes
   // )}m ${formatTime(seconds)}s`;

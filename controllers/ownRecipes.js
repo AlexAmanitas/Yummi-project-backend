@@ -1,4 +1,5 @@
 const Recipe = require('../models/recipe');
+const User = require('../models/user');
 const { HttpError, ctrlWrapper } = require('../helpers');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
@@ -81,6 +82,7 @@ const addOwnRecipes = async (req, res) => {
   if (!own) {
     throw HttpError(500, 'Recipe not added');
   }
+  await User.updateOne({ _id }, { $addToSet: { recipes: own._id } });
 
   res.status(201).json({
     status: 'success',

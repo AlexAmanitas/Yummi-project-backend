@@ -2,7 +2,7 @@ const User = require('../models/user');
 const { HttpError, ctrlWrapper } = require('../helpers');
 
 const bcrypt = require('bcrypt');
-
+const io = require('../socket');
 const jwt = require('jsonwebtoken');
 
 const { SECRET_KEY } = process.env;
@@ -25,13 +25,8 @@ const register = async (req, res) => {
   });
   const registerUser = await User.findOne({ email });
   const payload = { id: registerUser._id };
-  console.log(payload);
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
   await User.findByIdAndUpdate(registerUser._id, { token });
-
-  // sendEmail('gotvald@yahoo.com', verificationToken);
-  // sendEmail(user.email, verificationToken);
-
   res.status(201).json({
     token,
     user: {
@@ -53,13 +48,12 @@ const logIn = async (req, res) => {
   if (!passCompare) {
     throw HttpError(401, 'Email or password is wrong');
   }
-  // if (!user.verify) {
-  //   throw HttpError(401, 'Email not verify');
-  // }
   const payload = { id: user._id };
   console.log(payload);
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
   await User.findByIdAndUpdate(user._id, { token });
+  io.emit('userRegister', { name: user.name });
+
   res.status(200).json({
     token,
     user: {

@@ -4,8 +4,6 @@ const { EMAIL, PASSWORD } = process.env;
 console.log('EMAIL', EMAIL);
 
 const sendEmail = (email, verificationToken) => {
-  console.log('EMAILLLLLLLLLLLLLLLL', EMAIL, PASSWORD);
-
   const transporter = nodemailer.createTransport({
     host: 'smtp.ukr.net',
     port: 465,
@@ -20,8 +18,8 @@ const sendEmail = (email, verificationToken) => {
   const message = {
     from: EMAIL,
     to: email,
-    subject: 'Verification email',
-    text: `Please verify your email address. Follow to link: /users/verify/:${verificationToken}`,
+    subject: 'So Yummy subscribe service',
+    text: `Thank you for subscribing to our newsletter`,
     html: `
     <b style=
     "color:#ff6c00;
@@ -29,21 +27,21 @@ const sendEmail = (email, verificationToken) => {
      width: 100%;
       text-align: center;
     ">
-    Please verify your email address. Follow to link: 
+    Back to So Yummy :) 
     </b>
-    <br><br>
-    <p style='text-align:center;'>
-    <a href="users/verify/${verificationToken}" 
+       <p style='text-align:center;'>
+    <a href="https://yummy-project-backend.onrender.com" 
     style=
-    'background-color: #008CBA;
-     color: white; padding: 12px 20px;
+    'background-color: #8BAA36;
+     color: white;
+     padding: 12px 20px;
      text-align: center;
      text-decoration: none;
      display: inline-block;
      border-radius: 5px;
      cursor: pointer;
-     '>
-     /users/verify/${verificationToken}
+         '>
+     So Yummy :)
     </a>
     </p>`,
   };
