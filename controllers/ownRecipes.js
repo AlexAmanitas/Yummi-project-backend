@@ -3,7 +3,6 @@ const User = require('../models/user');
 const { HttpError, ctrlWrapper } = require('../helpers');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
-const io = require('../socket');
 
 const getOwnRecipes = async (req, res) => {
   const { _id } = req.user;
@@ -84,8 +83,6 @@ const addOwnRecipes = async (req, res) => {
     throw HttpError(500, 'Recipe not added');
   }
   await User.updateOne({ _id }, { $addToSet: { recipes: own._id } });
-
-  io.emit('firstOwn', { dato: own.title });
 
   res.status(201).json({
     status: 'success',
