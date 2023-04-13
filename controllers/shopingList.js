@@ -1,8 +1,5 @@
 const User = require('../models/user');
-const Ingredient = require('../models/ingredient');
 const { HttpError, ctrlWrapper } = require('../helpers');
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
 
 const getShopingList = async (req, res) => {
   const { _id } = req.user;
