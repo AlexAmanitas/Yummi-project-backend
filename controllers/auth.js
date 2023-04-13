@@ -2,7 +2,6 @@ const User = require('../models/user');
 const { HttpError, ctrlWrapper } = require('../helpers');
 
 const bcrypt = require('bcrypt');
-const io = require('../socket');
 const jwt = require('jsonwebtoken');
 
 const { SECRET_KEY } = process.env;
@@ -52,7 +51,6 @@ const logIn = async (req, res) => {
   console.log(payload);
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
   await User.findByIdAndUpdate(user._id, { token });
-  io.emit('userRegister', { name: user.name });
 
   res.status(200).json({
     token,
