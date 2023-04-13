@@ -47,7 +47,6 @@ const getUserStatistics = async (req, res) => {
   const createdAt = user.createdAt;
   const currentTime = new Date();
   const timeElapsed = convertMS(currentTime.getTime() - createdAt.getTime());
-
   res.status(200).json({
     status: 'success',
     code: 200,
