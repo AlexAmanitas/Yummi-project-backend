@@ -2,7 +2,7 @@ const express = require('express');
 
 const router = express.Router();
 
-const { validateBody, auth } = require('../../middlewares');
+const { auth } = require('../../middlewares');
 
 const {
   categoryList,

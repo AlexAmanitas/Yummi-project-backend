@@ -34,9 +34,9 @@ const updateUser = async (req, res) => {
     code: 200,
     data: {
       id: user._id,
-      name: name ? name : user.name,
+      name: name || user.name,
       email: user.email,
-      avatar: avatar ? avatar : user.avatar,
+      avatar: avatar || user.avatar,
     },
   });
 };

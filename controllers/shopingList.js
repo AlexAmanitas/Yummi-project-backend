@@ -1,5 +1,5 @@
 const User = require('../models/user');
-const Ingredient = require('../models/ingredient');
+// const Ingredient = require('../models/ingredient');
 const { HttpError, ctrlWrapper } = require('../helpers');
 const io = require('../socket');
 
