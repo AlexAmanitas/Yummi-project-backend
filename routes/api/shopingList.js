@@ -1,10 +1,6 @@
 const express = require('express');
-
 const router = express.Router();
-
 const { auth } = require('../../middlewares');
-
-// const IngredientSchema = require('../../schemas/ingredients');
 
 const {
   getShopingList,

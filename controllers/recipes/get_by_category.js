@@ -5,10 +5,7 @@ const Ingredient = require('../../models/ingredient');
 
 const getRecipesByCategory = async (req, res) => {
   const { ingredient, category, title, page = 1, limit = 8 } = req.query;
-
   const queryParams = {};
-  console.log('SEARCH');
-
   if (category) {
     const categories = await Category.find({ _id: category });
     queryParams.category = categories[0].name;
@@ -17,7 +14,6 @@ const getRecipesByCategory = async (req, res) => {
     queryParams.title = {
       $regex: new RegExp(`${title.split('').join('.*')}`, 'i'),
     };
-
   if (ingredient) {
     const ingredientId = await Ingredient.findOne({
       ttl: {
@@ -28,9 +24,7 @@ const getRecipesByCategory = async (req, res) => {
       $elemMatch: { id: ingredientId },
     };
   }
-
   const paginationParams = { skip: (page - 1) * limit, limit: +limit };
-
   const search = await Recipe.find(queryParams);
   const data = await Recipe.find(queryParams, '', paginationParams);
   if (!data) {

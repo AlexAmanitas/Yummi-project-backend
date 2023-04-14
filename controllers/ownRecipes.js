@@ -9,7 +9,6 @@ const getOwnRecipes = async (req, res) => {
   const { _id } = req.user;
   const { page = 1, limit = 8 } = req.query;
   const paginationParams = { skip: (page - 1) * limit, limit: +limit };
-
   const recipes = await Recipe.aggregate([
     {
       $match: {
@@ -56,9 +55,7 @@ const getOwnRecipes = async (req, res) => {
       $limit: paginationParams.limit,
     },
   ]);
-
   const total = await Recipe.countDocuments({ owner: ObjectId(_id) });
-
   res.status(200).json({
     status: 'success',
     code: 200,
@@ -72,10 +69,9 @@ const getOwnRecipes = async (req, res) => {
 const addOwnRecipes = async (req, res) => {
   const { _id } = req.user;
   const user = await User.findOne(_id);
-  const recipeImage = req.file
-    ? req.file.path
-    : 'https://res.cloudinary.com/dsseiacfv/image/upload/v1680762454/recipeImages/wkv92kkm5wgsmrst8ype.png';
-
+  const recipeImage =
+    req.file.path ||
+    'https://res.cloudinary.com/dsseiacfv/image/upload/v1680762454/recipeImages/wkv92kkm5wgsmrst8ype.png';
   const own = await Recipe.create({
     owner: _id,
     ...req.body,
@@ -85,11 +81,9 @@ const addOwnRecipes = async (req, res) => {
     throw HttpError(500, 'Recipe not added');
   }
   await User.updateOne({ _id }, { $addToSet: { recipes: own._id.toString() } });
-
   if (user.recipes.length === 0) {
     sendMotivation(_id, 'You’ve added your first own recipe!');
   }
-
   res.status(201).json({
     status: 'success',
     code: 201,
@@ -101,11 +95,9 @@ const removeOwnRecipes = async (req, res) => {
   const { _id } = req.user;
   const recipe = await Recipe.findOneAndDelete({ _id: id, owner: _id });
   await User.updateOne({ _id }, { $pull: { recipes: id } });
-
   if (!recipe) {
     throw HttpError(404, 'Recipe not found');
   }
-
   res.status(200).json({
     status: 'success',
     code: 200,

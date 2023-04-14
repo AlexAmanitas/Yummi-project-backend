@@ -8,7 +8,6 @@ const getShopingList = async (req, res) => {
   if (!user) {
     throw HttpError(404, 'User not found');
   }
-
   res.status(200).json({
     status: 'success',
     code: 200,
@@ -17,15 +16,12 @@ const getShopingList = async (req, res) => {
 };
 
 const addShopingList = async (req, res) => {
-  console.log('SHOPPING');
   const { _id } = req.user;
   const user = await User.findOne(_id);
   if (user.shopingList.length === 0) {
     sendMotivation(_id, 'You’ve added first item to your shopping list!');
   }
-
   await User.updateOne({ _id }, { $push: { shopingList: { ...req.body } } });
-
   res.status(201).json({
     status: 'success',
     code: 201,

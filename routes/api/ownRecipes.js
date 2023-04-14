@@ -1,11 +1,7 @@
 const express = require('express');
-
 const router = express.Router();
-
 const { auth, validateBody, uploadRecipeImage } = require('../../middlewares');
-
 const RecipeSchema = require('../../schemas/recipes');
-
 const {
   getOwnRecipes,
   addOwnRecipes,

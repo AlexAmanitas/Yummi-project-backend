@@ -4,7 +4,6 @@ const { sendMotivation } = require('../socket');
 const { convertMS } = require('../controllers/users');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
 const { SECRET_KEY } = process.env;
 
 const register = async (req, res) => {
@@ -16,7 +15,6 @@ const register = async (req, res) => {
   const hashPassword = bcrypt.hashSync(password, bcrypt.genSaltSync(10));
   const avatarUrl =
     'https://res.cloudinary.com/dsseiacfv/image/upload/v1680621422/avatars/rgvildvqnsh1qqyiibhx.jpg';
-
   await User.create({
     name,
     email,
@@ -56,20 +54,21 @@ const logIn = async (req, res) => {
     throw HttpError(401, 'Email or password is wrong');
   }
   const payload = { id: user._id };
-  console.log(payload);
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
   await User.findByIdAndUpdate(user._id, { token });
-
   const createdAt = user.createdAt;
   const currentTime = new Date();
   const timeElapsed = convertMS(currentTime.getTime() - createdAt.getTime());
-
   if (timeElapsed >= 10) {
-    sendMotivation(
-      user._id,
-      'You have been using the application for 10 days!',
-      3000
-    );
+    const notificationSent = localStorage.getItem('notificationSent');
+    if (!notificationSent) {
+      sendMotivation(
+        user._id,
+        'You have been using the application for 10 days!',
+        3000
+      );
+      localStorage.setItem('notificationSent', true);
+    }
   }
   res.status(200).json({
     token,

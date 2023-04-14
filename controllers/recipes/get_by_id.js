@@ -8,11 +8,8 @@ const getRecipeById = async (req, res) => {
   try {
     const { id } = req.params;
     const { _id } = req.user;
-
     const user = await User.findOne({ _id });
-
     const isFavorite = user.favorites.includes(id);
-
     const recipe = await Recipe.aggregate([
       {
         $match: {
@@ -53,7 +50,6 @@ const getRecipeById = async (req, res) => {
         $unset: ['ingr_nfo', 'ingredients.id'],
       },
     ]);
-    console.log('RECIPE', recipe);
     if (!recipe || recipe.length === 0) {
       throw HttpError(404, 'Not found');
     }

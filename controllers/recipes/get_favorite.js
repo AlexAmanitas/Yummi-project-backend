@@ -5,11 +5,8 @@ const User = require('../../models/user');
 const getFavoriteRecipes = async (req, res) => {
   const { page = 1, limit = 4 } = req.query;
   const paginationParams = { skip: (page - 1) * limit, limit: +limit };
-
   const { _id } = req.user;
   const user = await User.findById(_id);
-  console.log('fav', _id.toString());
-
   const data = await Recipe.find(
     { _id: { $in: user.favorites } },
     '',
