@@ -916,7 +916,8 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string"
+            "type": "string",
+            "example": ""
           }
         }
       },
@@ -983,19 +984,24 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "64393505663e703802077176"
           },
           "recipe": {
-            "type": "string"
+            "type": "string",
+            "example": "6439544b0a592544dbd004aa"
           },
           "ttl": {
-            "type": "string"
+            "type": "string",
+            "example": "Salmon"
           },
           "thb": {
-            "type": "string"
+            "type": "string",
+            "example": "https://res.cloudinary.com/ddbvbv5sp/image/upload/v1678564123/bwzvxyjxozyankmd6ky8.png"
           },
           "measure": {
-            "type": "string"
+            "type": "string",
+            "example": "500g"
           }
         }
       },
@@ -1003,10 +1009,12 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "640c2dd963a319ea671e36e3"
           },
           "recipe": {
-            "type": "string"
+            "type": "string",
+            "example": "640cd5ac2d9fecf12e8897fc"
           }
         }
       }
