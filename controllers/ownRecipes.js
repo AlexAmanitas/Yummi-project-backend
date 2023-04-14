@@ -57,15 +57,15 @@ const getOwnRecipes = async (req, res) => {
     },
   ]);
 
-  const count = await Recipe.countDocuments({ owner: ObjectId(_id) });
-
-  // return { recipes, count };
+  const total = await Recipe.countDocuments({ owner: ObjectId(_id) });
 
   res.status(200).json({
     status: 'success',
     code: 200,
+    total,
+    page: +page,
+    limit: +limit,
     data: recipes,
-    count,
   });
 };
 
