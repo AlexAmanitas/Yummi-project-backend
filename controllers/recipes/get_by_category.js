@@ -31,7 +31,6 @@ const getRecipesByCategory = async (req, res) => {
   const paginationParams = { skip: (page - 1) * limit, limit: +limit };
 
   const search = await Recipe.find(queryParams);
-
   const data = await Recipe.find(queryParams, '', paginationParams);
   if (!data) {
     throw HttpError(404, 'Not found');
