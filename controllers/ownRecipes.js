@@ -71,7 +71,7 @@ const getOwnRecipes = async (req, res) => {
 
 const addOwnRecipes = async (req, res) => {
   const { _id } = req.user;
-  const user = await User.findById(_id);
+  const user = await User.findOne(_id);
   if (user.recipes.length === 0) {
     sendMotivation(_id, 'You’ve added your first own recipe!');
   }

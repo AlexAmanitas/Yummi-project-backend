@@ -7,7 +7,7 @@ const addFavoriteRecipes = async (req, res) => {
   const { id } = req.body;
   const { _id } = req.user;
 
-  const user = await User.findById(_id);
+  const user = await User.findOne(_id);
 
   if (user.favorites.length === 0) {
     sendMotivation(_id, 'You’ve added first recipe to your favorites!');

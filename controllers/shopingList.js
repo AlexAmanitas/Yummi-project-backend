@@ -44,8 +44,8 @@ const removeShopingList = async (req, res) => {
       { $pull: { shopingList: { $and: [{ id }, { recipe }] } } }
     );
   });
-  const user = await User.findById(_id);
-  if (user.shopingList.length === 0) {
+  const user = await User.findOne(_id);
+  if (user.shopingList.length === 1) {
     sendMotivation(_id, 'Your shopping list is empty!');
   }
   res.status(204).json({
