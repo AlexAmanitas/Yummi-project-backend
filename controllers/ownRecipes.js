@@ -3,6 +3,7 @@ const User = require('../models/user');
 const { HttpError, ctrlWrapper } = require('../helpers');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
+const { sendMotivation } = require('../socket');
 
 const getOwnRecipes = async (req, res) => {
   const { _id } = req.user;
@@ -70,6 +71,10 @@ const getOwnRecipes = async (req, res) => {
 
 const addOwnRecipes = async (req, res) => {
   const { _id } = req.user;
+  const user = await User.findById(_id);
+  if (user.recipes.length === 0) {
+    sendMotivation(_id, 'You’ve added your first own recipe!');
+  }
   const recipeImage = req.file
     ? req.file.path
     : 'https://res.cloudinary.com/dsseiacfv/image/upload/v1680762454/recipeImages/wkv92kkm5wgsmrst8ype.png';

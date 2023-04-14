@@ -22,8 +22,13 @@ const getShopingList = async (req, res) => {
 const addShopingList = async (req, res) => {
   console.log('SHOPPING');
   const { _id } = req.user;
+  const user = await User.findOne(_id);
+  if (user.shopingList.length === 0) {
+    sendMotivation(_id, 'You`ve successfully added item to shoping list!');
+  }
+
   await User.updateOne({ _id }, { $push: { shopingList: { ...req.body } } });
-  sendMotivation(_id, 'You`ve successfully added item to shoping list!');
+
   res.status(201).json({
     status: 'success',
     code: 201,
@@ -39,6 +44,10 @@ const removeShopingList = async (req, res) => {
       { $pull: { shopingList: { $and: [{ id }, { recipe }] } } }
     );
   });
+  const user = await User.findById(_id);
+  if (user.shopingList.length === 0) {
+    sendMotivation(_id, 'Your shopping list is empty!');
+  }
   res.status(204).json({
     status: 'success',
     code: 204,
