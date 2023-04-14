@@ -28,7 +28,11 @@ const register = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
   await User.findByIdAndUpdate(registerUser._id, { token });
 
-  sendMotivation(_id, 'Congrats on your first day on the Yummy app!', 3000);
+  sendMotivation(
+    registerUser._id,
+    'Congrats on your first day on the Yummy app!',
+    3000
+  );
 
   res.status(201).json({
     token,
@@ -62,7 +66,7 @@ const logIn = async (req, res) => {
 
   if (timeElapsed >= 10) {
     sendMotivation(
-      _id,
+      user._id,
       'You have been using the application for 10 days!',
       3000
     );
