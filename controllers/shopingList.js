@@ -24,7 +24,7 @@ const addShopingList = async (req, res) => {
   const { _id } = req.user;
   const user = await User.findOne(_id);
   if (user.shopingList.length === 0) {
-    sendMotivation(_id, 'You`ve successfully added item to shoping list!');
+    sendMotivation(_id, 'You’ve added first item to your shopping list!');
   }
 
   await User.updateOne({ _id }, { $push: { shopingList: { ...req.body } } });
