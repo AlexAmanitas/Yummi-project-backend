@@ -30,7 +30,7 @@ const sendEmail = (email, verificationToken) => {
     Back to So Yummy :) 
     </b>
        <p style='text-align:center;'>
-    <a href="https://yummy-project-backend.onrender.com" 
+    <a href="https://dariatufar.github.io/command_project_React_Node/welcome" 
     style=
     'background-color: #8BAA36;
      color: white;

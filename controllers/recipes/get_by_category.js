@@ -8,6 +8,7 @@ const getRecipesByCategory = async (req, res) => {
 
   const queryParams = {};
   console.log('SEARCH');
+
   if (category) {
     const categories = await Category.find({ _id: category });
     queryParams.category = categories[0].name;
@@ -38,6 +39,9 @@ const getRecipesByCategory = async (req, res) => {
   res.status(200).json({
     status: 'success',
     code: 200,
+    total: search.length,
+    page: +page,
+    limit: +limit,
     total: search.length,
     page: +page,
     limit: +limit,

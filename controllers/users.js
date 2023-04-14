@@ -76,17 +76,10 @@ module.exports = {
   updateUser: ctrlWrapper(updateUser),
   getUserStatistics: ctrlWrapper(getUserStatistics),
   subscribeUser: ctrlWrapper(subscribeUser),
+  convertMS,
 };
 
 function convertMS(milliseconds) {
-  // const seconds = Math.floor((milliseconds / 1000) % 60);
-  // const minutes = Math.floor((milliseconds / (1000 * 60)) % 60);
-  // const hours = Math.floor((milliseconds / (1000 * 60 * 60)) % 24);
   const days = Math.floor(milliseconds / (1000 * 60 * 60 * 24));
-  // const formatTime = time => (time < 10 ? `0${time}` : time);
-  // const result = `${days}d ${formatTime(hours)}h ${formatTime(
-  //   minutes
-  // )}m ${formatTime(seconds)}s`;
-
   return days;
 }
