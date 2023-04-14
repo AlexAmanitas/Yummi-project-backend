@@ -42,9 +42,6 @@ const getRecipesByCategory = async (req, res) => {
     total: search.length,
     page: +page,
     limit: +limit,
-    total: search.length,
-    page: +page,
-    limit: +limit,
     data,
   });
 };
