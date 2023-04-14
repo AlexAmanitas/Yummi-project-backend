@@ -8,6 +8,7 @@ const getRecipesByCategory = async (req, res) => {
 
   const queryParams = {};
   console.log('SEARCH');
+
   if (category) {
     const categories = await Category.find({ _id: category });
     queryParams.category = categories[0].name;
@@ -32,6 +33,8 @@ const getRecipesByCategory = async (req, res) => {
 
   const search = await Recipe.find(queryParams);
 
+  const search = await Recipe.find(queryParams);
+
   const data = await Recipe.find(queryParams, '', paginationParams);
   if (!data) {
     throw HttpError(404, 'Not found');
@@ -39,6 +42,9 @@ const getRecipesByCategory = async (req, res) => {
   res.status(200).json({
     status: 'success',
     code: 200,
+    total: search.length,
+    page: +page,
+    limit: +limit,
     total: search.length,
     page: +page,
     limit: +limit,

@@ -1,4 +1,7 @@
 const express = require('express');
+const { createServer } = require('http');
+const { Server } = require('socket.io');
+
 const logger = require('morgan');
 const cors = require('cors');
 require('dotenv').config();
@@ -10,8 +13,19 @@ const authRouter = require('./routes/api/auth');
 const userRouter = require('./routes/api/users');
 const ownRecipesRouter = require('./routes/api/ownRecipes');
 const shopingListsRouter = require('./routes/api/shopingList');
+const { handleConnection, validateToken } = require('./socket');
 
 const app = express();
+const httpServer = createServer(app);
+
+// настройка socket.io
+const io = new Server(httpServer, {
+  cors: {
+    origin: '*',
+  },
+});
+io.use(validateToken);
+io.on('connection', handleConnection);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -36,4 +50,4 @@ app.use((err, req, res, next) => {
   res.status(status).json({ message: err.message });
 });
 
-module.exports = app;
+module.exports = { httpServer, io };

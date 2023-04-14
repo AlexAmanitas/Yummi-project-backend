@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const { HttpError, ctrlWrapper } = require('../helpers');
-
+const { sendMotivation } = require('../socket');
+const { convertMS } = require('../controllers/users');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -26,6 +27,9 @@ const register = async (req, res) => {
   const payload = { id: registerUser._id };
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
   await User.findByIdAndUpdate(registerUser._id, { token });
+
+  sendMotivation(_id, 'Congrats on your first day on the Yummy app!', 3000);
+
   res.status(201).json({
     token,
     user: {
@@ -52,6 +56,17 @@ const logIn = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
   await User.findByIdAndUpdate(user._id, { token });
 
+  const createdAt = user.createdAt;
+  const currentTime = new Date();
+  const timeElapsed = convertMS(currentTime.getTime() - createdAt.getTime());
+
+  if (timeElapsed >= 10) {
+    sendMotivation(
+      _id,
+      'You have been using the application for 10 days!',
+      3000
+    );
+  }
   res.status(200).json({
     token,
     user: {
