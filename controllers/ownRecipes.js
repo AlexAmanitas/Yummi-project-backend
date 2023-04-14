@@ -84,7 +84,7 @@ const addOwnRecipes = async (req, res) => {
   if (!own) {
     throw HttpError(500, 'Recipe not added');
   }
-  await User.updateOne({ _id }, { $addToSet: { recipes: own._id } });
+  await User.updateOne({ _id }, { $addToSet: { recipes: own._id.toString() } });
 
   if (user.recipes.length === 0) {
     sendMotivation(_id, 'You’ve added your first own recipe!');

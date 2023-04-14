@@ -860,17 +860,21 @@
       "UserDetails": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
+          "_id": {
+            "type": "ObjectId",
+            "example": "ObjectId('64393505663e703802077176')"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Jane"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "example": "jane@gmail.com"
           },
           "avatar": {
-            "type": "string"
+            "type": "string",
+            "example": "https://res.cloudinary.com/dsseiacfv/image/upload/v1680621422/avatars/rgvildvqnsh1qqyiibhx.jpg"
           }
         }
       },
@@ -878,10 +882,12 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Katy"
           },
           "avatar": {
-            "type": "string"
+            "type": "string",
+            "example": "https://res.cloudinary.com/dsseiacfv/image/upload/v1680621422/avatars/rgvildvqnsh1qqyiibhx.jpg"
           }
         }
       },
@@ -889,16 +895,20 @@
         "type": "object",
         "properties": {
           "days": {
-            "type": "string"
+            "type": "number",
+            "example": "54"
           },
           "recipes": {
-            "type": "string"
+            "type": "number",
+            "example": "7"
           },
           "favorites": {
-            "type": "string"
+            "type": "number",
+            "example": "14"
           },
           "shoppingLists": {
-            "type": "string"
+            "type": "number",
+            "example": "21"
           }
         }
       },
