@@ -57,19 +57,19 @@ const logIn = async (req, res) => {
   const token = jwt.sign(payload, SECRET_KEY, { expiresIn: '5d' });
   await User.findByIdAndUpdate(user._id, { token });
   const createdAt = user.createdAt;
-  const currentTime = new Date();
-  const timeElapsed = convertMS(currentTime.getTime() - createdAt.getTime());
-  if (timeElapsed >= 10) {
-    const notificationSent = localStorage.getItem('notificationSent');
-    if (!notificationSent) {
-      sendMotivation(
-        user._id,
-        'You have been using the application for 10 days!',
-        3000
-      );
-      localStorage.setItem('notificationSent', true);
-    }
-  }
+  // const currentTime = new Date();
+  // const timeElapsed = convertMS(currentTime.getTime() - createdAt.getTime());
+  // if (timeElapsed >= 10) {
+  //   const notificationSent = localStorage.getItem('notificationSent');
+  //   if (!notificationSent) {
+  //     sendMotivation(
+  //       user._id,
+  //       'You have been using the application for 10 days!',
+  //       3000
+  //     );
+  //     localStorage.setItem('notificationSent', true);
+  //   }
+  // }
   res.status(200).json({
     token,
     user: {
